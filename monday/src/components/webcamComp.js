@@ -11,28 +11,26 @@ const videoConstraints = {
     width: { min: 480 },
     height: { min: 720 },
     aspectRatio: 1,
-    facingMode: "user",
-    // facingMode: { exact: "environment" }
+    // facingMode: "user",
+    facingMode: { exact: "environment" }
   };
   
 const WebcamComp = () => {
 
-    let imgList = []
-
     const webcamRef = React.useRef(null);
     const bottomAppBar = React.useRef()
-    const [image, setImage] = React.useState('')
+    const [image, setImage] = React.useState([])
 
 
-    const capture = React.useCallback(
-        () => {
+     
+    const capture =() => {
         const imageSrc = webcamRef.current.getScreenshot();
-        // imgList.push(imageSrc)
-        // console.log(imgList)
-        setImage(imageSrc)
-        },
-        [webcamRef]
-    );
+        // console.log(image)
+        setImage(prevState => [...prevState, imageSrc])
+    }
+        
+    
+
     return (
         <>
         <Box
@@ -52,21 +50,29 @@ const WebcamComp = () => {
                 videoConstraints={videoConstraints}
             />
             
-                {/* { 
-                    image.map((img, key)=>
-                         <Box><img src={img} key={key} /></Box>
-                    )
-                } */}
                 <Box
                     sx={{
-                        maxHeight:'55px',
-                        maxWidth:'55px',
+                        maxHeight:'65px',
+                        maxWidth:'100%',
                         textAlign:'left',
-                        marginTop:'2px'
+                        marginTop:'2px',
+                        display:'flex',
+                        flexDirection:'row',
+                        alignItems:'flex-start',
+                        overflowX:'scroll',
+                        overflowY:'hidden'
                     }}
                 >
-                    <img src={image!=''? image: ''} height='55px' width='55px' alt=''/>
+                    {
+                        image.length ? image.map((img) =>{
+                            return <Box><img key={img} src={img} height='55px' width='55px' alt=''/></Box>
+                            }
+                            
+                        ): null
+                    }
+
                 </Box>
+                
         </Box>
 
         <AppBar ref={bottomAppBar} position="fixed" color="" sx={{ top: 'auto', bottom: 0, padding:0 }}>
