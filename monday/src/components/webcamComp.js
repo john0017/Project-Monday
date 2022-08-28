@@ -16,6 +16,8 @@ const videoConstraints = {
   
 const WebcamComp = () => {
 
+    let imgList = []
+
     const webcamRef = React.useRef(null);
     const bottomAppBar = React.useRef()
     const [image, setImage] = React.useState('')
@@ -24,28 +26,46 @@ const WebcamComp = () => {
     const capture = React.useCallback(
         () => {
         const imageSrc = webcamRef.current.getScreenshot();
+        // imgList.push(imageSrc)
+        // console.log(imgList)
         setImage(imageSrc)
         },
         [webcamRef]
     );
     return (
         <>
-        <Webcam
-            audio={false}
-            ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            // width={200} 
-            // height={720}
-            videoConstraints={videoConstraints}
-        />
-        
         <Box
-            border={1}
             sx={{
-                maxHeight:
+                display:'flex',
+                flexDirection:'column',
+                alignItems: 'flex-start',
+                marginTop:'60px'
             }}
         >
-
+            <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                // width={200} 
+                // height={720}
+                videoConstraints={videoConstraints}
+            />
+            
+                {/* { 
+                    image.map((img, key)=>
+                         <Box><img src={img} key={key} /></Box>
+                    )
+                } */}
+                <Box
+                    sx={{
+                        maxHeight:'55px',
+                        maxWidth:'55px',
+                        textAlign:'left',
+                        marginTop:'2px'
+                    }}
+                >
+                    <img src={image!=''? image: ''} height='55px' width='55px' alt=''/>
+                </Box>
         </Box>
 
         <AppBar ref={bottomAppBar} position="fixed" color="" sx={{ top: 'auto', bottom: 0, padding:0 }}>
