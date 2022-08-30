@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-import { taskWindow } from '../App';
+import { taskWindow, uploadImgList } from '../App';
 import { useRecoilState } from 'recoil';
 import TasksAccordions from './tasksAccordian';
 
@@ -17,6 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Tasks() {
   const [tasksWin, setTasksWin] = useRecoilState(taskWindow)
+  const [image, setImage] = useRecoilState(uploadImgList)
 
 
   const handleClose = () => {
@@ -26,6 +27,13 @@ export default function Tasks() {
         name:'',
         task_list:[]
     });
+
+    setImage({
+      asset_id:'',
+      task_id:'',
+      mode:'after',
+      image_list:[]
+    })
   };
 
   return (

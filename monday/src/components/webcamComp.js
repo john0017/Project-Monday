@@ -5,28 +5,29 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import './webCam.css'
-
+import { uploadImgList } from '../App';
+import { useRecoilState } from 'recoil';
 
 const videoConstraints = {
     width: { min: 480 },
     height: { min: 720 },
     aspectRatio: 1,
-    // facingMode: "user",
-    facingMode: { exact: "environment" }
+    facingMode: "user",
+    // facingMode: { exact: "environment" }
   };
   
 const WebcamComp = () => {
 
     const webcamRef = React.useRef(null);
     const bottomAppBar = React.useRef()
-    const [image, setImage] = React.useState([])
+    const [image, setImage] = useRecoilState(uploadImgList)
 
 
      
     const capture =() => {
         const imageSrc = webcamRef.current.getScreenshot();
-        // console.log(image)
-        setImage(prevState => [...prevState, imageSrc])
+        console.log(image.image_list)
+        setImage(prevState => ({...prevState, image_list:[...prevState.image_list, imageSrc]}))
     }
         
     
@@ -64,7 +65,7 @@ const WebcamComp = () => {
                     }}
                 >
                     {
-                        image.length ? image.map((img) =>{
+                        image.image_list.length ? image.image_list.map((img) =>{
                             return <Box><img key={img} src={img} height='55px' width='55px' alt=''/></Box>
                             }
                             

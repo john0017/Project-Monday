@@ -13,7 +13,8 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import WebcamComp from './webcamComp';
-
+import { uploadImgList } from '../App';
+import axios from 'axios';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -22,19 +23,44 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function ImageViewer() {
     const [imageWin, setImageWin] = useRecoilState(imageWindow)
     const [camState, setCamState] = React.useState(false)
+    const [image, setImage] = useRecoilState(uploadImgList)
 
     const handleClose = () => {
         setImageWin({
-            open:false,
-            id:'',
-            name:'',
+            asset_id:'',
+            task_id:'',
+            mode:'after',
             image_list:[]
-        });
+          });
         setCamState(false)
     };
 
     const handleOpenCam = ()=>{
         setCamState(true)
+    }
+
+    const uploadImages = ()=>{
+
+        let data = image
+
+        const headers={
+            'Content-Type':'application/json',
+          }
+          axios.post('https://protoxsys.eu.pythonanywhere.com/uploadImages', data, {
+            headers: headers
+          }).then(resp=>{
+              console.log(resp.data)
+          }).catch((err)=>{
+              console.log(err)
+          });
+
+          setCamState(false);
+          setImage({
+            asset_id:'',
+            task_id:'',
+            mode:'after',
+            image_list:[]
+          })
     }
 
     return (
@@ -69,6 +95,21 @@ export default function ImageViewer() {
                 onClick={handleOpenCam}
                 >
                 <PhotoCamera />
+                </IconButton>
+
+                <IconButton
+                edge='end'
+                color="inherit"
+                //   onClick={handleClose}
+                aria-label="close"
+                sx={{
+                    marginLeft:'auto',
+                    display:(image.image_list.length>0? null: 'none')
+
+                }}
+                onClick={uploadImages}
+                >
+                <Typography fontWeight={700}>Save</Typography>
                 </IconButton>
                 {/* <Typography noWrap fontWeight={700}>
                     

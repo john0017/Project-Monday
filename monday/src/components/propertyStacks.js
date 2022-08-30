@@ -10,8 +10,7 @@ import { assets } from '../App';
 import { useRecoilState } from 'recoil';
 import { Typography } from '@mui/material';
 import Tasks from './tasks';
-import { taskWindow } from '../App';
-import { tasks } from '../App';
+import { taskWindow, tasks, uploadImgList } from '../App';
 
 
 
@@ -20,6 +19,7 @@ export default function PropertyStack() {
   const [_assets, setAssets] = useRecoilState(assets)
   const [tasksWin, setTasksWin] = useRecoilState(taskWindow)
   const [tasksList, setTaskslist] = useRecoilState(tasks)
+  const [image, setImage] = useRecoilState(uploadImgList)
 
 
   const handleClick =(id, name)=>{
@@ -33,7 +33,7 @@ export default function PropertyStack() {
               taskSelection.list.push(task)
             }
           })
-          // console.log(taskSelection)
+          console.log(taskSelection)
 
           if(taskSelection.list.length<=0){
 
@@ -47,6 +47,7 @@ export default function PropertyStack() {
               task_list:taskSelection
               })
           }
+          setImage(prevState => ({...prevState, asset_id:id}))
   }
 
   return (

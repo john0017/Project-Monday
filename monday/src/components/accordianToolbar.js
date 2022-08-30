@@ -7,23 +7,23 @@ import ImageGridView from './imageList';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
-import { imageWindow } from '../App';
 import { useRecoilState } from 'recoil';
+import { imageWindow, uploadImgList } from '../App';
 
 
 const AccordianToolbar = () => {
 
     const [imageWin, setImageWin] = useRecoilState(imageWindow)
 
+    const handleMediaOpen = () => {
 
-    const handleOpen = () => {
-        console.log('image')
         setImageWin({
             open:true,
             id:'',
             name:'',
             image_list:[]
-        });
+          });
+
     };
 
 
@@ -45,7 +45,7 @@ const AccordianToolbar = () => {
                     >
                     <Chip
                         label="Media"
-                        onClick={handleOpen}
+                        onClick={handleMediaOpen}
                         deleteIcon={<PhotoCamera />}
                         variant="outlined"
                     />
@@ -60,7 +60,7 @@ const AccordianToolbar = () => {
                     disabled
                 />
                     <Chip
-                    label="Custom delete icon"
+                    label="Share"
                     // onClick={handleClick}
                     // onDelete={handleDelete}
                     // deleteIcon={<DeleteIcon />}

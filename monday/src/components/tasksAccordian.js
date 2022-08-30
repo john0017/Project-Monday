@@ -5,7 +5,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import { taskWindow } from '../App';
+import { taskWindow, uploadImgList } from '../App';
 import { useRecoilState } from 'recoil';
 import AccordianToolbar from './accordianToolbar';
 
@@ -49,24 +49,33 @@ export default function TasksAccordions() {
     const [expanded, setExpanded] = React.useState('');
 
     const [tasksWin, setTasksWin] = useRecoilState(taskWindow)
+    const [image, setImage] = useRecoilState(uploadImgList)
 
 
     const handleChange = (panel) => (event, newExpanded) => {
         setExpanded(newExpanded ? panel : false);
     };
 
+    const setTaskID =(id)=>{
+      setImage(prevState => ({...prevState, task_id:id}))
+    }
+
     return (
         <div>
             {
                 tasksWin.task_list.list!=undefined? tasksWin.task_list.list.map((item, idx)=>{
                     return <Accordion key={idx} expanded={expanded === `panel${idx}`} onChange={handleChange(`panel${idx}`)}>
-                                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header"
+                                   onClick={()=>setTaskID(item.task_id)}
+                                >
                                 <Typography >
                                     {item.tasks}
                                 </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <AccordianToolbar />
+
+                                    <AccordianToolbar/>
+
                                 </AccordionDetails>
                             </Accordion>
                             

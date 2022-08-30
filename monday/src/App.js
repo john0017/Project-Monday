@@ -39,11 +39,28 @@ export const imageWindow = atom({
   }
 })
 
+export const uploadImgList = atom({
+  key:'uploadImgList',
+  default:{
+    asset_id:'',
+    task_id:'',
+    mode:'after',
+    image_list:[]
+  }
+})
+
 
 function App() {
 
   const [_assets, setAssets] = useRecoilState(assets)
   const [_tasks, setTasks] = useRecoilState(tasks)
+  const [image, setImage] = useRecoilState(uploadImgList)
+
+
+
+  React.useEffect(()=>{
+    console.log(image)
+  },[image])
 
   React.useEffect(()=>{
 
@@ -59,7 +76,7 @@ function App() {
   React.useEffect(()=>{
 
     axios.get('https://protoxsys.eu.pythonanywhere.com/tasks').then(resp=>{
-        console.log(resp.data)
+        // console.log(resp.data)
         setTasks(resp.data)
     }).catch((err)=>{
         console.log(err)
