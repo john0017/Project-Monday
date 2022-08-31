@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import WebcamComp from './webcamComp';
-import { uploadImgList, spinner } from '../App';
+import { uploadImgList, spinner, assetTaskImageList } from '../App';
 import axios from 'axios';
 import Spinner from './spinner';
 
@@ -28,6 +28,18 @@ export default function ImageViewer() {
     const [camState, setCamState] = React.useState(false)
     const [image, setImage] = useRecoilState(uploadImgList)
     const [spin, setSpin] = useRecoilState(spinner);
+    const [assetMedia, setAssetMedia] = useRecoilState(assetTaskImageList)
+
+    React.useEffect(()=>{
+
+        axios.get(`https://protoxsys.eu.pythonanywhere.com/images/${image.asset_id}/${image.task_id}`).then(resp=>{
+            console.log(resp.data)
+            setAssetMedia(resp.data)
+        }).catch((err)=>{
+            console.log(err)
+        });
+      
+      },[imageWin])
 
     const handleClose = () => {
         setImageWin({
@@ -58,7 +70,7 @@ export default function ImageViewer() {
           axios.post('https://protoxsys.eu.pythonanywhere.com/uploadImages', data, {
             headers: headers
           }).then(resp=>{
-              console.log(resp.data)
+            //   console.log(resp.data)
 
             if(resp.data=='success'){
                 setCamState(false);
@@ -66,7 +78,7 @@ export default function ImageViewer() {
                 setSpin(false)
             }
             else{
-                console.log('error')
+                // console.log('error')
                 setSpin(false)
             }
 
@@ -80,7 +92,6 @@ export default function ImageViewer() {
     return (
         <div>
         
-
         <Dialog
             fullScreen
             open={imageWin.open}

@@ -52,6 +52,11 @@ export const spinner = atom({
   default:false
 })
 
+export const assetTaskImageList = atom({
+  key:'assetTaskImageList',
+  default:[]
+})
+
 
 function App() {
 
