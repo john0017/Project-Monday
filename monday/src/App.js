@@ -6,8 +6,6 @@ import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import Tasks from './components/tasks';
 import ImageViewer from './components/imageViewer';
-import WebcamComp from './components/webcamComp';
-
 
 export const assets = atom({
   key:'assets',
@@ -47,6 +45,11 @@ export const uploadImgList = atom({
     mode:'after',
     image_list:[]
   }
+})
+
+export const spinner = atom({
+  key:'spinner',
+  default:false
 })
 
 

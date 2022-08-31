@@ -13,8 +13,11 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import WebcamComp from './webcamComp';
-import { uploadImgList } from '../App';
+import { uploadImgList, spinner } from '../App';
 import axios from 'axios';
+import Spinner from './spinner';
+
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -24,14 +27,18 @@ export default function ImageViewer() {
     const [imageWin, setImageWin] = useRecoilState(imageWindow)
     const [camState, setCamState] = React.useState(false)
     const [image, setImage] = useRecoilState(uploadImgList)
+    const [spin, setSpin] = useRecoilState(spinner);
 
     const handleClose = () => {
         setImageWin({
-            asset_id:'',
-            task_id:'',
-            mode:'after',
+            open:false,
+            id:'',
+            name:'',
             image_list:[]
           });
+
+        setImage(prevState => ({...prevState, image_list:[]}))
+
         setCamState(false)
     };
 
@@ -40,6 +47,8 @@ export default function ImageViewer() {
     }
 
     const uploadImages = ()=>{
+
+        setSpin(true)
 
         let data = image
 
@@ -50,21 +59,28 @@ export default function ImageViewer() {
             headers: headers
           }).then(resp=>{
               console.log(resp.data)
+
+            if(resp.data=='success'){
+                setCamState(false);
+                setImage(prevState => ({...prevState, image_list:[]}))
+                setSpin(false)
+            }
+            else{
+                console.log('error')
+                setSpin(false)
+            }
+
           }).catch((err)=>{
               console.log(err)
           });
 
-          setCamState(false);
-          setImage({
-            asset_id:'',
-            task_id:'',
-            mode:'after',
-            image_list:[]
-          })
+          
     }
 
     return (
         <div>
+        
+
         <Dialog
             fullScreen
             open={imageWin.open}
@@ -118,7 +134,8 @@ export default function ImageViewer() {
             </AppBar>
 
             { camState? <WebcamComp /> : <ImageGridView /> }
-            
+            <Spinner msg={'Uploading...'}/>
+
             <AppBar position="fixed" color="" sx={{ top: 'auto', bottom: 0, padding:0, display:(camState? 'none': null) }}>
                 <Toolbar
                     sx={{
