@@ -6,6 +6,11 @@ import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import Tasks from './components/tasks';
 import ImageViewer from './components/imageViewer';
+import Alerts from './components/alerts';
+import PdfGen from './components/pdfGen';
+import PDFViewer from './components/pdfViewer';
+
+
 
 export const assets = atom({
   key:'assets',
@@ -57,6 +62,16 @@ export const assetTaskImageList = atom({
   default:[]
 })
 
+export const alerts = atom({
+  key:'alerts',
+  default:{
+    open:false,
+    type:'success',
+    color:'',
+    message:'success'
+  }
+})
+
 
 function App() {
 
@@ -95,10 +110,10 @@ function App() {
 
   return (
     <div className="App">
-      {/* <WebcamComp /> */}
-      <ImageViewer />
+      <PDFViewer />
+      {/* <ImageViewer />
       <Tasks />
-      <Home />
+      <Home /> */}
     </div>
   );
 }

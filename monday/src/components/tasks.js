@@ -9,6 +9,12 @@ import Slide from '@mui/material/Slide';
 import { taskWindow, uploadImgList } from '../App';
 import { useRecoilState } from 'recoil';
 import TasksAccordions from './tasksAccordian';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ClickAwayListener from '@mui/base/ClickAwayListener';
+
+
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -18,7 +24,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Tasks() {
   const [tasksWin, setTasksWin] = useRecoilState(taskWindow)
   const [image, setImage] = useRecoilState(uploadImgList)
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
   const handleClose = () => {
     setTasksWin({
@@ -36,12 +49,24 @@ export default function Tasks() {
     })
   };
 
+  const handleClickAway =(e)=>{
+    e.preventDefault();
+    console.log('clicked Away')
+  }
+
+  const onCloseHandler=(event, reason)=>{
+    console.log(tasksWin.open)
+    if(reason=='backdropClick'){
+      event.preventDefault()
+    }
+  }
+
   return (
     <div>
       <Dialog
         fullScreen
         open={tasksWin.open}
-        onClose={handleClose}
+        onClose={onCloseHandler}
         TransitionComponent={Transition}
       >
         <AppBar sx={{ position: 'sticky' }}>
@@ -57,6 +82,33 @@ export default function Tasks() {
             <Typography noWrap fontWeight={700}>
                 {tasksWin.name}
             </Typography>
+
+            <IconButton
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              sx={{marginLeft:'auto'}}
+            >
+              <MoreVertIcon sx={{color:'white'}} />
+            </IconButton>
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+                <MenuItem >Add Task</MenuItem>
+                <MenuItem >Mark As Complete</MenuItem>
+                <MenuItem >Upload Tasks </MenuItem>
+                <MenuItem >Get PDF </MenuItem>
+              </Menu>
+            </ClickAwayListener>
           </Toolbar>
         </AppBar>
         <TasksAccordions />

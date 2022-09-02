@@ -6,12 +6,11 @@ import FilterIcon from '@mui/icons-material/Filter';
 import Badge from '@mui/material/Badge';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import { assets } from '../App';
+import { assets, alerts } from '../App';
 import { useRecoilState } from 'recoil';
 import { Typography } from '@mui/material';
 import Tasks from './tasks';
 import { taskWindow, tasks, uploadImgList } from '../App';
-
 
 
 export default function PropertyStack() {
@@ -20,6 +19,7 @@ export default function PropertyStack() {
   const [tasksWin, setTasksWin] = useRecoilState(taskWindow)
   const [tasksList, setTaskslist] = useRecoilState(tasks)
   const [image, setImage] = useRecoilState(uploadImgList)
+  const [alert, setAlerts] = useRecoilState(alerts)
 
 
   const handleClick =(id, name)=>{
@@ -36,8 +36,12 @@ export default function PropertyStack() {
           console.log(taskSelection)
 
           if(taskSelection.list.length<=0){
-
-            console.log('no tasks')
+            setAlerts({
+              open:true,
+              type:'error',
+              color:'error',
+              message:'No Tasks'
+            })
           }
           else{
             setTasksWin({
@@ -51,6 +55,7 @@ export default function PropertyStack() {
   }
 
   return (
+    <>
     <Box
       sx={{
         width: '100%',
@@ -117,5 +122,6 @@ export default function PropertyStack() {
 
       </Stack>
     </Box >
+    </>
   );
 }
