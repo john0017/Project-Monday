@@ -4,7 +4,6 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import FilterIcon from '@mui/icons-material/Filter';
 import Badge from '@mui/material/Badge';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { assets, alerts } from '../App';
 import { useRecoilState } from 'recoil';
@@ -60,7 +59,7 @@ export default function PropertyStack() {
       sx={{
         width: '100%',
         padding: '5px',
-        marginY: '10px'
+        marginY: '10px',
       }}
     >
       <Stack
@@ -101,20 +100,20 @@ export default function PropertyStack() {
                 <ListAltIcon 
                   color={item.task_list==null|0? 'error': 'success'}
                 />
-                <HourglassTopIcon 
+                {/* <HourglassTopIcon 
                   sx={{
                     display:item.snags==null|0? 'none':"",
                   }}
-                />
-                <Badge
+                /> */}
+                {/* <Badge
                   badgeContent={item.image_count==null|0? 0:item.image_count}
                   color="primary"
                   sx={{
                     marginRight: '3px'
                   }}
-                >
-                  <FilterIcon />
-                </Badge>
+                > */}
+                  {/* <FilterIcon /> */}
+                {/* </Badge> */}
               </Box>
             </Paper>
           })

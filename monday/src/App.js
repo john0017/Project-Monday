@@ -9,7 +9,21 @@ import ImageViewer from './components/imageViewer';
 import Alerts from './components/alerts';
 import PdfGen from './components/pdfGen';
 import PDFViewer from './components/pdfViewer';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import InputDialog from './components/dialogWithInput';
 
+
+const theme = createTheme({
+  palette:{
+    primary:{
+      main: '#277BC0'
+    },
+    secondary: {
+      main: '#FFB200',
+    },
+  },
+})
 
 
 export const assets = atom({
@@ -72,6 +86,15 @@ export const alerts = atom({
   }
 })
 
+export const inputDialog = atom({
+  key:'inputDialog',
+  default:{
+    open:false,
+    msg:'',
+    id:'',
+    response:''
+  }
+})
 
 function App() {
 
@@ -109,12 +132,16 @@ function App() {
 
 
   return (
-    <div className="App">
-      {/* <PDFViewer /> */}
-      <ImageViewer />
-      <Tasks />
-      <Home />
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+        <div className="App">
+          {/* <PDFViewer /> */}
+          <ImageViewer />
+          <Tasks />
+          <Home />
+          <InputDialog />
+        </div>
+    </ThemeProvider>
   );
 }
 
