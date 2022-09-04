@@ -6,13 +6,14 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-import { taskWindow, uploadImgList } from '../App';
+import { taskWindow, uploadImgList, spinner } from '../App';
 import { useRecoilState } from 'recoil';
 import TasksAccordions from './tasksAccordian';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClickAwayListener from '@mui/base/ClickAwayListener';
+import axios from 'axios'
 
 
 
@@ -24,16 +25,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Tasks() {
   const [tasksWin, setTasksWin] = useRecoilState(taskWindow)
   const [image, setImage] = useRecoilState(uploadImgList)
+  const [spin, setSpin] = useRecoilState(spinner);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleCloseMenu = () => {
+  const CloseMenu = () => {
     setAnchorEl(null);
   };
 
   const handleClose = () => {
+    CloseMenu()
     setTasksWin({
         open:false,
         id:'',
@@ -54,19 +59,34 @@ export default function Tasks() {
     console.log('clicked Away')
   }
 
-  const onCloseHandler=(event, reason)=>{
-    console.log(tasksWin.open)
-    if(reason=='backdropClick'){
-      event.preventDefault()
-    }
+  const GeneratePdf=()=>{
+        
+        CloseMenu()
+
+          axios.get('https://protoxsys.eu.pythonanywhere.com/generatePDF/'+image.asset_id
+            )
+          .then(function (response) {
+            console.log(response);
+            if (response.data=='success'){
+              const url=`https://getpoco.s3.amazonaws.com/${image.asset_id}/pdf/after.pdf`
+              window.open(url, '_blank', 'noopener,noreferrer')
+            }
+
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
   }
+
+ 
 
   return (
     <div>
       <Dialog
         fullScreen
         open={tasksWin.open}
-        onClose={onCloseHandler}
+        // onClose={onCloseHandler}
         TransitionComponent={Transition}
       >
         <AppBar sx={{ position: 'sticky' }}>
@@ -93,6 +113,7 @@ export default function Tasks() {
             >
               <MoreVertIcon sx={{color:'white'}} />
             </IconButton>
+            
             <ClickAwayListener onClickAway={handleClickAway}>
               <Menu
                 id="basic-menu"
@@ -103,10 +124,18 @@ export default function Tasks() {
                   'aria-labelledby': 'basic-button',
                 }}
               >
-                <MenuItem >Add Task</MenuItem>
-                <MenuItem >Mark As Complete</MenuItem>
-                <MenuItem >Upload Tasks </MenuItem>
-                <MenuItem >Get PDF </MenuItem>
+                <MenuItem 
+                  disabled
+                >Add Task</MenuItem>
+                <MenuItem 
+                  disabled
+                >Mark As Complete</MenuItem>
+                <MenuItem 
+                  disabled
+                >Upload Tasks </MenuItem>
+                <MenuItem 
+                  onClick={GeneratePdf}
+                >Get PDF </MenuItem>
               </Menu>
             </ClickAwayListener>
           </Toolbar>

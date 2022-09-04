@@ -110,10 +110,10 @@ function App() {
 
   return (
     <div className="App">
-      <PDFViewer />
-      {/* <ImageViewer />
+      {/* <PDFViewer /> */}
+      <ImageViewer />
       <Tasks />
-      <Home /> */}
+      <Home />
     </div>
   );
 }

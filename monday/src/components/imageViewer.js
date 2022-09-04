@@ -70,7 +70,7 @@ export default function ImageViewer() {
           axios.post('https://protoxsys.eu.pythonanywhere.com/uploadImages', data, {
             headers: headers
           }).then(resp=>{
-            //   console.log(resp.data)
+              console.log(resp.data)
 
             if(resp.data=='success'){
                 setCamState(false);
