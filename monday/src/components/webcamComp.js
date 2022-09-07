@@ -9,9 +9,9 @@ import { uploadImgList } from '../App';
 import { useRecoilState } from 'recoil';
 
 const videoConstraints = {
-    width: { min: 480 },
+    width: { min: 1280 },
     height: { min: 720 },
-    aspectRatio: 1,
+    // aspectRatio: 0.5,
     facingMode: "user",
     // facingMode: { exact: "environment" }
   };
@@ -23,14 +23,12 @@ const WebcamComp = () => {
     const [image, setImage] = useRecoilState(uploadImgList)
 
 
-     
     const capture =() => {
         const imageSrc = webcamRef.current.getScreenshot();
         console.log(image.image_list)
         setImage(prevState => ({...prevState, image_list:[...prevState.image_list, imageSrc]}))
     }
         
-    
 
     return (
         <>
@@ -46,6 +44,7 @@ const WebcamComp = () => {
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
+                forceScreenshotSourceSize={true}
                 // width={200} 
                 // height={720}
                 videoConstraints={videoConstraints}
@@ -56,7 +55,7 @@ const WebcamComp = () => {
                         maxHeight:'65px',
                         maxWidth:'100%',
                         textAlign:'left',
-                        marginTop:'2px',
+                        marginTop:'35px',
                         display:'flex',
                         flexDirection:'row',
                         alignItems:'flex-start',

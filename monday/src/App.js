@@ -12,6 +12,9 @@ import PDFViewer from './components/pdfViewer';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import InputDialog from './components/dialogWithInput';
+import TestCam from './components/testCam';
+import Cam from './components/cam';
+
 
 
 const theme = createTheme({
@@ -135,11 +138,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
         <div className="App">
-          {/* <PDFViewer /> */}
+          {/* <PDFViewer />
           <ImageViewer />
           <Tasks />
           <Home />
-          <InputDialog />
+          <InputDialog /> */}
+          {/* <TestCam /> */}
+          <Cam />
         </div>
     </ThemeProvider>
   );
