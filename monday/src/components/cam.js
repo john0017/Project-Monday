@@ -3,6 +3,9 @@ import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 import './webCam.css'
 import axios from 'axios';
+import { Box } from '@mui/system';
+import { AppBar } from '@mui/material';
+import App from '../App';
 
 
 function Cam (props) {
@@ -36,13 +39,24 @@ function Cam (props) {
         },[img])
 
   return (
-    <Camera
-        imageType='jpg'
-        isFullscreen={true}
-        sizeFactor={1}
-        isMaxResolution={true}
-        onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
-    />
+    <Box>
+    {/* //   <Box
+    //     border={1}
+    //   >
+    //     test
+    //   </Box> */}
+    <AppBar color='transparent' elevation={1}>
+    test
+    </AppBar>
+      <Camera
+          imageType='jpg'
+          isFullscreen={true}
+          sizeFactor={1}
+          isMaxResolution={true}
+          onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
+      />
+      
+    </Box>
   );
 }
 
